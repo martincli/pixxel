@@ -1,0 +1,519 @@
+.pregame-page {
+  width: 700px;
+  display: grid;
+  grid-template-columns: 400px auto;
+  grid-column-gap: 50px;
+  align-items: start;
+
+  .header {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+
+  .game-data {
+    margin-bottom: 40px;
+
+    > div {
+      margin-bottom: 10px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      span.label {
+        display: inline-block;
+        width: 100px;
+        margin-right: 20px;
+        text-align: right;
+        font-size: 13px;
+        color: #666;
+      }
+    }
+  }
+
+  .player-list {
+    margin-bottom: 40px;
+
+    > div {
+      font-size: 20px;
+      margin-bottom: 5px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .fa-user-circle {
+        font-size: 13px;
+        margin-left: 5px;
+        position: relative;
+        bottom: 1px;
+        color: $dark-blue;
+      }
+    }
+  }
+
+  .footer {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    text-align: center;
+    color: $dark-blue;
+    font-size: 24px;
+
+    button {
+      font-size: 18px;
+      padding: 20px;
+      width: 200px;
+      margin: 0 auto 10px;
+    }
+
+    .message {
+      color: #777;
+      font-size: 16px;
+    }
+  }
+}
+
+.drawing-page {
+  width: 900px;
+  display: grid;
+  grid-template-columns: 600px auto;
+  grid-column-gap: 50px;
+  align-items: start;
+
+  .phrase-wrapper {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    text-align: center;
+    margin-bottom: 30px;
+    
+    .label {
+      font-size: 16px;
+      color: #666;
+    }
+
+    .phrase {
+      font-size: 24px;
+      font-weight: bold;
+    }
+  }
+
+  .player-list {
+    margin-bottom: 40px;
+    grid-row-start: 2;
+    grid-row-end: 3;
+
+    > div {
+      font-size: 16px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .fa-star {
+        font-size: 13px;
+        margin-left: 3px;
+        color: $dark-blue;
+      }
+    }
+  }
+
+  .buttons {
+    grid-row-start: 3;
+    grid-row-end: 4;
+    align-self: end;
+    position: relative;
+    bottom: 60px;
+  
+    button {
+      font-size: 18px;
+      padding: 20px;
+      width: 200px;
+      margin-bottom: 10px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.set-phrase-page {
+  width: 900px;
+  text-align: center;
+
+  input[type=text] {
+    width: calc(100% - 40px);
+    max-width: 350px;
+    padding: 20px;
+    font: 36px 'Muli';
+    margin: 0 auto 10px;
+    border: 1px solid #bbb;
+    border-radius: 2px;
+    outline: none;
+    text-align: center;
+    color: $dark-blue;
+
+    &::-webkit-input-placeholder {
+      color: #ccc;
+    }
+    &:-moz-placeholder {
+      color: #ccc;
+      opacity: 1;
+    }
+    &::-moz-placeholder {
+      color: #ccc;
+      opacity: 1;
+    }
+    &:-ms-input-placeholder {
+      color: #ccc;
+    }
+    &::-ms-input-placeholder {
+      color: #ccc;
+    }
+    &::placeholder {
+      color: #ccc;
+    }
+  }
+
+  button {
+    font-size: 18px;
+    padding: 20px;
+    width: 200px;
+    margin: 0 auto 10px;
+  }
+}
+
+.judging-page {
+  width: 900px;
+  display: grid;
+  grid-template-columns: 600px auto;
+  grid-column-gap: 50px;
+  align-items: start;
+
+  .drawing-wrapper {
+    grid-row-start: 2;
+    grid-row-end: 4;
+
+    .drawing {
+      box-shadow: 0 0 5px #bbb;
+      width: 600px;
+      height: 450px;
+      margin-bottom: 5px;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 20px;
+      font-weight: bold;
+      height: 30px;
+
+      a {
+        color: $dark-blue;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+
+      .page {
+        font-weight: bold;
+      }
+    }
+  }
+
+  button {
+    grid-row-start: 3;
+    grid-row-end: 4;
+    align-self: end;
+    position: relative;
+    bottom: 40px;
+    font-size: 18px;
+    padding: 15px 20px;
+    width: 200px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .phrase-wrapper {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    text-align: center;
+    margin-bottom: 30px;
+    
+    .label {
+      font-size: 16px;
+      color: #666;
+    }
+
+    .phrase {
+      font-size: 24px;
+      font-weight: bold;
+    }
+  }
+
+  .player-list {
+    margin-bottom: 40px;
+    grid-row-start: 2;
+    grid-row-end: 3;
+
+    > div {
+      font-size: 16px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .fa-star {
+        font-size: 13px;
+        margin-left: 3px;
+        color: $dark-blue;
+      }
+    }
+  }
+}
+
+.round-end-page {
+  width: 900px;
+  display: grid;
+  grid-template-columns: 600px auto;
+  grid-column-gap: 50px;
+  align-items: start;
+
+  .message-wrapper {
+    font-size: 20px;
+    text-align: center;
+    margin: 0 auto 20px;
+
+    > div {
+      margin-bottom: 8px;
+    }
+
+    .game-end-message {
+      font-size: 28px;
+      color: #23ac33;
+      font-weight: bold;
+    }
+  }
+
+  .drawing-wrapper {
+    grid-row-start: 2;
+    grid-row-end: 4;
+
+    .drawing {
+      box-shadow: 0 0 5px #bbb;
+      width: 600px;
+      height: 450px;
+      margin-bottom: 10px;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 20px;
+      font-weight: bold;
+      height: 30px;
+
+      a {
+        color: $dark-blue;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+
+      .page {
+        font-weight: bold;
+      }
+    }
+  }
+
+  button {
+    grid-row-start: 3;
+    grid-row-end: 4;
+    align-self: end;
+    position: relative;
+    bottom: 45px;
+    font-size: 18px;
+    padding: 20px;
+    width: 200px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .phrase-wrapper {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    text-align: center;
+    margin-bottom: 30px;
+    
+    .label {
+      font-size: 16px;
+      color: #666;
+    }
+
+    .phrase {
+      font-size: 24px;
+      font-weight: bold;
+    }
+  }
+
+  .player-list {
+    margin-bottom: 40px;
+    grid-row-start: 2;
+    grid-row-end: 3;
+
+    > div {
+      font-size: 16px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .fa-star {
+        font-size: 13px;
+        margin-left: 3px;
+        color: $dark-blue;
+      }
+    }
+  }
+}
+
+.message-page {
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+}
+
+.short-message {
+  margin-bottom: 30px;
+
+  div:first-child {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .pregame-page {
+    display: block;
+    width: 90%;
+
+    .game-info-wrapper,
+    .player-list-wrapper {
+      margin-bottom: 30px;
+    }
+
+    .player-list {
+      text-align: center;
+    }
+  }
+
+  .drawing-page {
+    display: block;
+    width: 100%;
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: static;
+      bottom: 0;
+      margin-bottom: 30px;
+      
+      button {
+        max-width: 180px;
+        width: 40%;
+        margin: 0 8px;
+      }
+    }
+
+    .player-list {
+      width: 90%;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+  }
+
+  .set-phrase-page, 
+  .message-page {
+    width: 90%;
+  }
+
+  .judging-page,
+  .round-end-page {
+    display: block;
+    width: 100%;
+
+    .message-wrapper {
+      width: 90%;
+    }
+
+    .drawing-wrapper {
+      .drawing {
+        display: block;
+        width: 90%;
+        height: auto;
+        max-width: 600px;
+        margin: 0 auto 10px;
+      }
+
+      .nav {
+        width: 90%;
+        max-width: 600px;
+        margin: 0 auto 30px;
+      }
+    }
+
+    button {
+      position: static;
+      bottom: 0;
+      margin: 0 auto 30px;
+      display: block;
+    }
+
+    .player-list {
+      width: 90%;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .round-end-page {
+    .message-wrapper {
+      font-size: 16px;
+
+      .game-end-message {
+        font-size: 24px;
+      }
+    }
+
+    .drawing-wrapper .nav {
+      font-size: 16px;
+    }
+  }
+}

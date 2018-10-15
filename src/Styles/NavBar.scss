@@ -1,0 +1,77 @@
+.navbar {
+  width: 100%;
+  height: 50px;
+  background: rgba($light-blue,0.3);
+  border-bottom: 1px solid #bbb;
+
+  .navbar-inner {
+    max-width: 900px;
+    padding: 0 10px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    a.title {
+      font: 40px 'Caveat';
+      color: lighten($black,3%);
+      transition: color 0.15s;
+
+      &:hover {
+        text-decoration: none;
+        color: $dark-blue;
+      }
+    }
+
+    .menu {
+      display: flex;
+      align-items: center;
+
+      a.menu-item {
+        height: 50px;
+        display: flex;
+        align-items: center;
+        padding: 0 15px;
+        color: $dark-blue;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.15s;
+
+        &.mobile {
+          display: none;
+        }
+        
+        &:hover {
+          background: rgba(0,0,0,0.07);
+          text-decoration: none;
+        }
+
+        .fa-sign-out {
+          position: relative;
+          margin-left: 8px;
+          top: 1px;
+          font-size: 18px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .navbar .navbar-inner .menu a.menu-item.desktop {
+    display: none;
+  }
+  .navbar .navbar-inner .menu a.menu-item.mobile {
+    display: flex;
+    padding: 0 10px;
+
+    .fa-cog {
+      font-size: 24px;
+    }
+    .fa-sign-out {
+      margin-left: 0;
+      top: 0;
+      font-size: 24px;
+    }
+  }
+}

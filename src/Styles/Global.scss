@@ -1,0 +1,139 @@
+$black: #2e2e2e;
+$light-blue: #64a0ff;
+$dark-blue: #134aa3;
+$red: #c23f3f;
+$green: #23ac33;
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.content-box {
+  border: 1px solid #bbb;
+  background: rgba(0,0,0,0.06);
+  padding: 15px 20px;
+}
+
+button {
+  display: block;
+  margin: 0 auto;
+  font-family: 'Varela Round';
+  padding: 10px 30px;
+  background: $light-blue;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.15s;
+
+  &:hover {
+    background: darken($light-blue, 5%);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+
+    &:hover {
+      background: $light-blue;
+    }
+  }
+}
+
+.error {
+  display: none;
+  font-size: 15px;
+  font-weight: bold;
+  color: $red;
+  text-align: center;
+  opacity: 0;
+  margin-bottom: 0;
+  transform: translateY(-75%);
+  transition: all .2s ease-in;
+
+  &.error-enter {
+    display: block;
+  }
+
+  &.error-enter-active,
+  &.error-enter-done {
+    display: block;
+    transform: translateY(0);
+    margin-bottom: 20px;
+    opacity: 1;
+  }
+
+  &.error-exit {
+    display: block;
+    transform: translateY(0);
+    margin-bottom: 20px;
+    opacity: 1;
+  }
+
+  &.error-exit-active {
+    display: block;
+    transform: translateY(-75%);
+    margin-bottom: 0;
+    opacity: 0;
+  }
+
+  &.error-exit-done {
+    display: none;
+  }
+}
+
+.success {
+  display: none;
+  font-size: 15px;
+  font-weight: bold;
+  color: $green;
+  text-align: center;
+  opacity: 0;
+  margin-bottom: 0;
+  transform: translateY(-75%);
+  transition: all .2s ease-in;
+
+  &.success-enter {
+    display: block;
+  }
+
+  &.success-enter-active,
+  &.success-enter-done {
+    display: block;
+    transform: translateY(0);
+    margin-bottom: 20px;
+    opacity: 1;
+  }
+
+  &.success-exit {
+    display: block;
+    transform: translateY(0);
+    margin-bottom: 20px;
+    opacity: 1;
+  }
+
+  &.success-exit-active {
+    display: block;
+    transform: translateY(-75%);
+    margin-bottom: 0;
+    opacity: 0;
+  }
+
+  &.success-exit-done {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .centered {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    margin: 40px auto;
+  }
+}

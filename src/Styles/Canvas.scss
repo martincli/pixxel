@@ -1,0 +1,168 @@
+.canvas-wrapper {
+  grid-row-start: 2;
+  grid-row-end: 4;
+
+  .canvas {
+    background: #fff;
+    cursor: url('/img/dot.png'), auto;
+    box-shadow: 0 0 5px #bbb;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .options {
+    width: 580px;
+    height: 50px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    input[type=range] {
+      width: 120px;
+      -webkit-appearance: none;
+      height: 12px;
+      border-radius: 5px;   
+      background: #bbb;
+      outline: none;
+      cursor: pointer;
+
+      &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%; 
+        background: #666;
+      }
+
+      &::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: #666;
+      }
+    }
+    
+    .colors {
+      display: inline-block;
+      text-align: right;
+      display: flex;
+      align-items: center;
+
+      .color-option {
+        position: relative;
+        display: inline-block;
+        margin-right: 6px;
+        height: 24px;
+        width: 24px;
+        border-radius: 3px;
+        cursor: pointer;
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        &.selected {
+          box-shadow: 0 0 0 2px $black;
+          transition: all 0.15s;
+
+          &:after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 6px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 6px 6px 6px;
+            border-color: transparent transparent $black transparent;
+          }
+        }
+
+        &.red {
+          background-color: red;
+        }
+        &.orange {
+          background-color: orange;
+        }
+        &.yellow {
+          background-color: yellow;
+        }
+        &.green {
+          background-color: green;
+        }
+        &.blue {
+          background-color: blue;
+        }
+        &.purple {
+          background-color: purple;
+        }
+        &.brown {
+          background-color: brown;
+        }
+        &.black {
+          background-color: black;
+        }
+        &.silver {
+          background-color: silver;
+        }
+        &.white {
+          background-color: white;
+        }
+        &.pink {
+          background-color: pink;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .canvas-wrapper {
+    margin-bottom: 30px;
+
+    .canvas {
+      margin: 0 auto;
+    }
+
+    .options {
+      width: 90%;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .canvas-wrapper {
+    .options {
+      input[type=range] {
+        width: 70px;
+        height: 10px;
+  
+        &::-webkit-slider-thumb {
+          width: 20px;
+          height: 20px;
+        }
+  
+        &::-moz-range-thumb {
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      .colors {
+        .color-option {
+          width: 18px;
+          height: 18px;
+
+          &.selected {
+            &:after {
+              content: '';
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}

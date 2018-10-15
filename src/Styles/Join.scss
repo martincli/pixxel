@@ -1,0 +1,51 @@
+.join-page {
+  width: 900px;
+  text-align: center;
+
+  input[type=text] {
+    width: calc(100% - 40px);
+    max-width: 350px;
+    padding: 20px;
+    font: 36px 'Muli';
+    margin: 0 auto 10px;
+    border: 1px solid #bbb;
+    border-radius: 2px;
+    outline: none;
+    text-align: center;
+    color: $dark-blue;
+
+    &::-webkit-input-placeholder {
+      color: #ccc;
+    }
+    &:-moz-placeholder {
+      color: #ccc;
+      opacity: 1;
+    }
+    &::-moz-placeholder {
+      color: #ccc;
+      opacity: 1;
+    }
+    &:-ms-input-placeholder {
+      color: #ccc;
+    }
+    &::-ms-input-placeholder {
+      color: #ccc;
+    }
+    &::placeholder {
+      color: #ccc;
+    }
+  }
+
+  button {
+    font-size: 18px;
+    padding: 20px;
+    width: 200px;
+    margin: 0 auto 10px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .join-page {
+    width: 90%;
+  }
+}

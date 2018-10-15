@@ -1,0 +1,89 @@
+.auth-page {
+  width: 90%;
+  max-width: 400px;
+
+  .title {
+    font: 90px 'Caveat';
+    text-align: center;
+    margin-bottom: -10px;
+    color: lighten($black,3%);
+  }
+
+  .intro, .footer {
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 30px;
+  }
+
+  form {
+    margin-bottom: 30px;
+
+    .form-element {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 5px;
+  
+      label {
+        text-align: right;
+        font-size: 15px;
+        width: 75px;
+        margin-right: 8px;
+  
+        &.small {
+          font-size: 12px;
+        }
+      }
+  
+      input {
+        width: 160px;
+        padding: 5px 8px;
+        font: 16px 'Muli';
+        border: 1px solid #bbb;
+        border-radius: 2px;
+        outline: none;
+        margin-right: 15px;
+      }
+    }
+
+    button {
+      font-size: 15px;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .auth-page {
+    .title {
+      font-size: 72px;
+    }
+
+    .intro, .footer {
+      font-size: 14px;
+    }
+
+    form .form-element {
+      flex-direction: column;
+
+      label {
+        text-align: center;
+        margin-bottom: 2px;
+        width: 80%;
+        font-size: 14px;
+
+        &.small {
+          font-size: 14px;
+        }
+      }
+
+      input {
+        width: 80%;
+        margin-right: 0;
+      }
+    }
+
+    button {
+      font-size: 14px;
+    }
+  }
+}
