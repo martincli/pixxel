@@ -32,7 +32,8 @@ class Canvas extends Component {
     this.ctx = this.canvas.getContext('2d');
 
     if (window.innerWidth < 992) {
-      this.ctx.canvas.width = 0.9 * window.innerWidth;
+      const width = Math.min(document.documentElement.clientWidth, window.innerWidth);
+      this.ctx.canvas.width = 0.9 * width;
       this.ctx.canvas.height = this.ctx.canvas.width / 1.333333;
     } else {
       this.ctx.canvas.width = 600;
@@ -52,7 +53,8 @@ class Canvas extends Component {
 
   onWindowResize() {
     if (window.innerWidth < 992) {
-      this.ctx.canvas.width = 0.9 * window.innerWidth;
+      const width = Math.min(document.documentElement.clientWidth, window.innerWidth);
+      this.ctx.canvas.width = 0.9 * width;
       this.ctx.canvas.height = this.ctx.canvas.width / 1.333333;
       this.redraw();
     } else {
@@ -63,10 +65,12 @@ class Canvas extends Component {
   }
 
   onMouseDown({ nativeEvent }) {
+    nativeEvent.preventDefault();
+    nativeEvent.stopPropagation();
     let { offsetX, offsetY } = nativeEvent;
     if (nativeEvent.touches) {
       offsetX = nativeEvent.touches[0].pageX - nativeEvent.touches[0].target.offsetLeft;     
-      offsetY = nativeEvent.touches[0].pageY - nativeEvent.touches[0].target.offsetTop;
+      offsetY = nativeEvent.touches[0].pageY - nativeEvent.touches[0].target.offsetTop - 91;
     }
     this.isDrawing = true;
     this.points.push({ x: offsetX+2, y: offsetY+2, drag: false, color: this.state.color, size: this.ctx.lineWidth });
@@ -74,18 +78,22 @@ class Canvas extends Component {
   }
 
   onMouseMove({ nativeEvent }) {
+    nativeEvent.preventDefault();
+    nativeEvent.stopPropagation();
     if (this.isDrawing) {
       let { offsetX, offsetY } = nativeEvent;
       if (nativeEvent.touches) {
         offsetX = nativeEvent.touches[0].pageX - nativeEvent.touches[0].target.offsetLeft;     
-        offsetY = nativeEvent.touches[0].pageY - nativeEvent.touches[0].target.offsetTop;
+        offsetY = nativeEvent.touches[0].pageY - nativeEvent.touches[0].target.offsetTop - 91;
       }
       this.points.push({ x: offsetX+2, y: offsetY+2, drag: true, color: this.state.color, size: this.ctx.lineWidth });
       this.redraw();
     }
   }
 
-  onMouseUpOrLeave() {
+  onMouseUpOrLeave(ev) {
+    ev.preventDefault();
+    ev.stopPropagation();
     this.isDrawing = false;
   }
 
