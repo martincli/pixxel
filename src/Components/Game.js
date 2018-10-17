@@ -371,7 +371,7 @@ class Game extends Component {
             <div className="game-data-wrapper">
               <div className="header">Game Info</div>
               <div className="game-data content-box">
-                <div><span className="label">Game ID:</span> {game.id}</div>
+                <div><span className="label">Game ID:</span> <span style={{fontWeight: 'bold', color: '#134aa3'}}>{game.id}</span></div>
                 <div><span className="label">Host:</span> {game.hostName}</div>
                 <div><span className="label">Created:</span> {(new Date(game.createdAt.seconds*1000)).toLocaleString('en-US')}</div>
                 <div><span className="label">Game Mode:</span> First to 5 Points</div>
