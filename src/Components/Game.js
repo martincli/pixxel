@@ -23,6 +23,7 @@ class Game extends Component {
     this.state = {
       loading: true,
       submitting: false,
+      gameIdCopied: false,
       started: false,
       drawings: [],
       currDrawing: null,
@@ -30,8 +31,9 @@ class Game extends Component {
       error: ''
     };
 
-    this.startGame = this.startGame.bind(this);
     this.joinGame = this.joinGame.bind(this);
+    this.startGame = this.startGame.bind(this);
+    this.copyGameId = this.copyGameId.bind(this);
     this.attemptSetPhrase = this.attemptSetPhrase.bind(this);
     this.attemptSubmitDrawing = this.attemptSubmitDrawing.bind(this);
     this.chooseWinner = this.chooseWinner.bind(this);
@@ -88,6 +90,21 @@ class Game extends Component {
       this.props.history.push(`/`); 
       this.props.history.push(`/game/${this.props.game.id}`); 
     });;
+  }
+
+  copyGameId() {
+    const dummy = document.createElement('input');
+    document.body.appendChild(dummy);
+    dummy.setAttribute('id', 'dummy');
+    document.getElementById('dummy').value = this.props.game.id;
+    dummy.select();
+    document.execCommand('copy');
+    document.body.removeChild(dummy);
+
+    this.setState({ gameIdCopied: true });
+    setTimeout(() => {
+      this.setState({ gameIdCopied: false });
+    }, 2000);
   }
 
   attemptSetPhrase(ev) {
@@ -395,6 +412,13 @@ class Game extends Component {
               <div className="footer">
                 {game.hostId === this.props.user.uid ? 
                   <div>
+                    <CSSTransition
+                      in={Boolean(this.state.gameIdCopied)}
+                      classNames="success"
+                      timeout={200}>
+                      <div className="success">Game ID copied!</div>
+                    </CSSTransition>
+                    <button onClick={this.copyGameId}>COPY GAME ID</button>
                     <button onClick={this.startGame} disabled={Object.keys(game.players).length < 3}>START GAME</button>
                     <div className="message" style={{display: Object.keys(game.players).length < 3 ? 'block' : 'none'}}>( At least 3 players are required to start the game. )</div>
                   </div>
