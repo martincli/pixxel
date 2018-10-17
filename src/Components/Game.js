@@ -26,9 +26,8 @@ class Game extends Component {
       loading: true,
       submitting: false,
       gameIdCopied: false,
-      started: false,
       drawings: [],
-      currDrawing: null,
+      currDrawing: 0,
       phrase: '',
       error: ''
     };
@@ -44,11 +43,7 @@ class Game extends Component {
 
   componentWillMount() {
     this.props.getGame(this.props.match.params.id).then(() => {
-      if (this.props.game) {
-        this.setState({ loading: false, started: this.props.game.started });
-      }
       this.setState({ loading: false });
-
       this.props.attachGameListener(this.props.game.id, this.props.history);
     });
   }
@@ -59,19 +54,26 @@ class Game extends Component {
       const activeRound = game.players[this.props.user.uid].activeRound;
       const judgeId = (activeRound === game.status.round) ? game.status.currentJudgeId : game.roundData[activeRound].judgeId;
 
-      const drawings = shuffle(Object.entries(this.props.game.players))
+      let drawings = shuffle(Object.entries(this.props.game.players))
         .filter(([uid,playerData]) => { return uid !== judgeId })
         .map(([uid,playerData]) => { return [uid, playerData.name, playerData.drawings[activeRound]] });
 
-      this.setState({ 
-        drawings: drawings,
-        currDrawing: 0
-      });
+      this.setState({ drawings });
+    }
+  }
 
+  componentDidUpdate() {
+    const game = this.props.game;
+    if (game.started) {
+      const activeRound = game.players[this.props.user.uid].activeRound;
+
+      // set current drawing to winning drawing on round end page
       if (activeRound < game.status.round) {
-        drawings.forEach((drawing, index) => {
+        this.state.drawings.forEach((drawing, index) => {
           if (game.roundData[activeRound].winnerId === drawing[0]) {
-            this.setState({ currDrawing: index });
+            if (this.state.currDrawing !== index) {
+              this.setState({ currDrawing: index });
+            }
           }
         });
       }
@@ -87,19 +89,11 @@ class Game extends Component {
       this.props.game.id,
       this.props.user.uid,
       this.props.user.displayName
-    ).then(() => { 
-      this.props.history.push(`/`); 
-      this.props.history.push(`/game/${this.props.game.id}`); 
-    });
+    );
   }
 
   startGame() {
-    this.props.startGame(this.props.game.id).then(() => {
-      this.setState({ started: true });
-    }).then(() => { 
-      this.props.history.push(`/`); 
-      this.props.history.push(`/game/${this.props.game.id}`); 
-    });;
+    this.props.startGame(this.props.game.id);
   }
 
   copyGameId() {
@@ -145,10 +139,7 @@ class Game extends Component {
 
   attemptSubmitDrawing() {
     this.setState({ submitting: true });
-    this.props.submitDrawing(this.props.user.uid, this.props.game.id, this.canvasWrapper.canvas.toDataURL()).then(() => {
-      this.props.history.push(`/`); 
-      this.props.history.push(`/game/${this.props.game.id}`);
-    });
+    this.props.submitDrawing(this.props.user.uid, this.props.game.id, this.canvasWrapper.canvas.toDataURL());
   }
 
   changeDrawing(direction) {
@@ -173,17 +164,11 @@ class Game extends Component {
     const gameId = this.props.game.id;
     const drawing = this.state.drawings[this.state.currDrawing];
     const uid = drawing[0];
-    this.props.chooseWinner(gameId, uid).then(() => {
-      this.props.history.push(`/`); 
-      this.props.history.push(`/game/${this.props.game.id}`);
-    });
+    this.props.chooseWinner(gameId, uid);
   }
 
   continueToNextRound() {
-    this.props.continueToNextRound(this.props.game.id, this.props.user.uid).then(() => {
-      this.props.history.push(`/`); 
-      this.props.history.push(`/game/${this.props.game.id}`);
-    });
+    this.props.continueToNextRound(this.props.game.id, this.props.user.uid);
   }
 
   render() {
@@ -198,7 +183,7 @@ class Game extends Component {
       const game = this.props.game;
 
       // game started
-      if (this.state.started) {
+      if (game.started) {
 
         // user not in game
         if (!game.playerIds.includes(this.props.user.uid)) {
