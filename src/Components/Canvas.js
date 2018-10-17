@@ -17,6 +17,7 @@ class Canvas extends Component {
       'orange',
       'yellow',
       'green',
+      'cyan',
       'blue',
       'purple',
       'brown',
