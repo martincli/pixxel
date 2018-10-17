@@ -8,6 +8,9 @@ export const GET_USER_GAMES = 'get_user_games';
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/pixxel/image/upload';
 const CLOUDINARY_UPLOAD_PRESET = 'vqb2ko26';
 
+const gameListeners = {};
+const userGamesListeners = {};
+
 export function getGame(id) {
   return dispatch => games.doc(id).get().then(doc => {
     if(doc.exists) {
@@ -33,6 +36,46 @@ export function getUserGames(uid) {
       })
     });
   });
+}
+
+export function attachUserGamesListener(uid) {
+  return dispatch => {
+    userGamesListeners[uid] = games.where('playerIds', 'array-contains', uid).onSnapshot(querySnapshot => {
+      dispatch({
+        type: GET_USER_GAMES,
+        payload: querySnapshot.docs.map(doc => {
+          return doc.data();
+        })
+      });
+    });
+  }
+}
+
+export function detachUserGamesListener(uid) {
+  return dispatch => {
+    if(userGamesListeners.uid) {
+      userGamesListeners[uid]();
+    };
+  };
+}
+
+export function attachGameListener(gameId) {
+  return dispatch => {
+    gameListeners[gameId] = games.doc(gameId).onSnapshot(doc => {
+      dispatch({
+        type: GET_GAME,
+        payload: doc.data()
+      });
+    });
+  };
+}
+
+export function detachGameListener(gameId) {
+  return dispatch => {
+    if(gameListeners.gameId) {
+      gameListeners[gameId]();
+    };
+  };
 }
 
 export function updateNames(uid, newName) {
@@ -158,6 +201,7 @@ export function chooseWinner(gameId, uid) {
       const newRound = game.status.round + 1;
       const newJudgeIndex = (game.status.currentJudgeIndex + 1) % game.playerIds.length;
       const newJudgeId = playerIds[newJudgeIndex];
+      const newJudgeDrawings = game.players[judgeId].drawings.concat(''); // can't use arrayUnion because of multiple empty entries
       const newHaventSubmitted = playerIds.filter(id => { return id !== newJudgeId });
 
       const prevRound = {
@@ -168,7 +212,7 @@ export function chooseWinner(gameId, uid) {
       const ended = (newPoints === game.pointsToWin) ? true : false;
 
       transaction.update(ref, {
-        [`players.${judgeId}.drawings`]: firebase.firestore.FieldValue.arrayUnion(''),
+        [`players.${judgeId}.drawings`]: newJudgeDrawings,
         [`players.${uid}.points`]: newPoints,
         ended: ended,
         status: {

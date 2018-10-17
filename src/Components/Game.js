@@ -10,7 +10,9 @@ import {
   setPhrase,
   submitDrawing,
   chooseWinner,
-  continueToNextRound
+  continueToNextRound,
+  attachGameListener,
+  detachGameListener
 } from "../Actions/GameActions";
 import NavBar from './NavBar';
 import Canvas from './Canvas';
@@ -47,29 +49,37 @@ class Game extends Component {
       }
       this.setState({ loading: false });
 
-      const game = this.props.game;
-      if (game.started) {
-        const activeRound = game.players[this.props.user.uid].activeRound;
-        const judgeId = (activeRound === game.status.round) ? game.status.currentJudgeId : game.roundData[activeRound].judgeId;
-  
-        const drawings = shuffle(Object.entries(this.props.game.players))
-          .filter(([uid,playerData]) => { return uid !== judgeId })
-          .map(([uid,playerData]) => { return [uid, playerData.name, playerData.drawings[activeRound]] });
-  
-        this.setState({ 
-          drawings: drawings,
-          currDrawing: 0
-        });
-  
-        if (activeRound < game.status.round) {
-          drawings.forEach((drawing, index) => {
-            if (game.roundData[activeRound].winnerId === drawing[0]) {
-              this.setState({ currDrawing: index });
-            }
-          });
-        }
-      }
+      this.props.attachGameListener(this.props.game.id, this.props.history);
     });
+  }
+
+  componentWillReceiveProps() {
+    const game = this.props.game;
+    if (game.started) {
+      const activeRound = game.players[this.props.user.uid].activeRound;
+      const judgeId = (activeRound === game.status.round) ? game.status.currentJudgeId : game.roundData[activeRound].judgeId;
+
+      const drawings = shuffle(Object.entries(this.props.game.players))
+        .filter(([uid,playerData]) => { return uid !== judgeId })
+        .map(([uid,playerData]) => { return [uid, playerData.name, playerData.drawings[activeRound]] });
+
+      this.setState({ 
+        drawings: drawings,
+        currDrawing: 0
+      });
+
+      if (activeRound < game.status.round) {
+        drawings.forEach((drawing, index) => {
+          if (game.roundData[activeRound].winnerId === drawing[0]) {
+            this.setState({ currDrawing: index });
+          }
+        });
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.detachGameListener(this.props.game.id);
   }
 
   joinGame() {
@@ -451,5 +461,7 @@ export default connect(mapStateToProps, {
   setPhrase,
   submitDrawing,
   chooseWinner,
-  continueToNextRound
+  continueToNextRound,
+  attachGameListener,
+  detachGameListener
 })(Game);

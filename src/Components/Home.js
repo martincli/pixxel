@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Hashids from 'hashids';
 import NavBar from './NavBar';
-import { getUserGames, createGame } from '../Actions/GameActions';
+import {
+  getUserGames,
+  createGame,
+  attachUserGamesListener,
+  detachUserGamesListener
+} from '../Actions/GameActions';
 
 class Home extends Component {
   constructor(props) {
@@ -12,6 +17,11 @@ class Home extends Component {
 
   componentWillMount() {
     this.props.getUserGames(this.props.user.uid);
+    this.props.attachUserGamesListener(this.props.user.uid);
+  }
+
+  componentWillUnmount() {
+    this.props.detachUserGamesListener(this.props.user.uid);
   }
 
   createGame() {
@@ -100,4 +110,9 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { getUserGames, createGame })(Home);
+export default connect(mapStateToProps, { 
+  getUserGames,
+  createGame,
+  attachUserGamesListener,
+  detachUserGamesListener
+})(Home);
