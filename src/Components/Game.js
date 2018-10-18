@@ -27,6 +27,7 @@ class Game extends Component {
       submitting: false,
       gameIdCopied: false,
       drawings: [],
+      drawingsSorted: false,
       currDrawing: 0,
       phrase: '',
       error: ''
@@ -56,7 +57,11 @@ class Game extends Component {
 
       let drawings = shuffle(Object.entries(this.props.game.players))
         .filter(([uid,playerData]) => { return uid !== judgeId })
-        .map(([uid,playerData]) => { return [uid, playerData.name, playerData.drawings[activeRound]] });
+        .map(([uid,playerData]) => { return {
+          uid,
+          name: playerData.name,
+          drawing: playerData.drawings[activeRound]
+        }});
 
       this.setState({ drawings });
     }
@@ -64,18 +69,26 @@ class Game extends Component {
 
   componentDidUpdate() {
     const game = this.props.game;
-    if (game.started) {
+    if (game.started && this.state.drawings.length > 0) {
       const activeRound = game.players[this.props.user.uid].activeRound;
 
-      // set current drawing to winning drawing on round end page
+      // set first drawing to winning drawing on round end page
       if (activeRound < game.status.round) {
-        this.state.drawings.forEach((drawing, index) => {
-          if (game.roundData[activeRound].winnerId === drawing[0]) {
-            if (this.state.currDrawing !== index) {
-              this.setState({ currDrawing: index });
-            }
-          }
-        });
+        const winnerId = game.roundData[activeRound].winnerId;
+
+        if (this.state.drawings[0].uid !== winnerId) {
+          const sortedDrawings = this.state.drawings
+            .slice()
+            .sort((a,b) => {
+              return a.uid === winnerId ? -1 : b.uid === winnerId ? 1 : 0;
+            });
+          this.setState({ drawings: sortedDrawings });
+        }
+
+        // reset current drawing index
+        if (!this.state.drawingsSorted) {
+          this.setState({ currDrawing: 0, drawingsSorted: true })
+        }
       }
     }
   }
@@ -162,13 +175,14 @@ class Game extends Component {
 
   chooseWinner() {
     const gameId = this.props.game.id;
-    const drawing = this.state.drawings[this.state.currDrawing];
-    const uid = drawing[0];
+    const uid = this.state.drawings[this.state.currDrawing].uid;
     this.props.chooseWinner(gameId, uid);
   }
 
   continueToNextRound() {
-    this.props.continueToNextRound(this.props.game.id, this.props.user.uid);
+    this.props.continueToNextRound(this.props.game.id, this.props.user.uid).then(() => {
+      this.setState({ drawingsSorted: false });
+    });
   }
 
   render() {
@@ -205,10 +219,10 @@ class Game extends Component {
                   </div>
 
                   <div className="drawing-wrapper">
-                    {this.state.drawings.length > 0 && <img className="drawing" src={this.state.drawings[this.state.currDrawing][2]} alt="" />}
+                    {this.state.drawings.length > 0 && <img className="drawing" src={this.state.drawings[this.state.currDrawing].drawing} alt="" />}
                     <div className="nav">
                       <a onClick={this.changeDrawing.bind(this,'prev')}><i className="fa fa-caret-left"></i> Prev</a>
-                      <div className="page">{`${this.state.drawings[this.state.currDrawing][1]}'s drawing`}</div>
+                      <div className="page">{`${this.state.drawings[this.state.currDrawing].name}'s drawing`}</div>
                       <a onClick={this.changeDrawing.bind(this,'next')}>Next <i className="fa fa-caret-right"></i></a>
                     </div>
                   </div>
@@ -284,7 +298,7 @@ class Game extends Component {
                   </div>
                   
                   <div className="drawing-wrapper">
-                    <img className="drawing" src={this.state.drawings[this.state.currDrawing][2]} alt="" />
+                    <img className="drawing" src={this.state.drawings[this.state.currDrawing].drawing} alt="" />
                     <div className="nav">
                       <a onClick={this.changeDrawing.bind(this,'prev')}><i className="fa fa-caret-left"></i> Prev</a>
                       <div className="page">{this.state.currDrawing+1} / {this.state.drawings.length}</div>
