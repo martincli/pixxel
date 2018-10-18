@@ -87,7 +87,7 @@ class Game extends Component {
 
         // reset current drawing index
         if (!this.state.drawingsSorted) {
-          this.setState({ currDrawing: 0, drawingsSorted: true })
+          this.setState({ currDrawing: 0, drawingsSorted: true });
         }
       }
     }

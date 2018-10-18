@@ -151,7 +151,7 @@ export function startGame(gameId) {
     const playerIds = shuffle(doc.data().playerIds);
 
     return doc.ref.update({
-      playerIds: playerIds,
+      playerIds,
       status: {
         round: 0,
         currentJudgeIndex: 0,
@@ -214,7 +214,7 @@ export function chooseWinner(gameId, uid) {
       transaction.update(ref, {
         [`players.${judgeId}.drawings`]: newJudgeDrawings,
         [`players.${uid}.points`]: newPoints,
-        ended: ended,
+        ended,
         status: {
           round: newRound,
           currentJudgeIndex: newJudgeIndex,
