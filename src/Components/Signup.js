@@ -18,15 +18,15 @@ class Signup extends Component {
     this.submitSignup = this.submitSignup.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.user.email) {
       this.props.history.push('/home');
     }
   }
   
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.user.email) {
-      nextProps.history.push('/home');
+  componentDidUpdate() {
+    if (this.props.user.email) {
+      this.props.history.push('/home');
     }
   }
 

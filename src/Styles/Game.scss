@@ -217,6 +217,9 @@
 
       a {
         color: $dark-blue;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
 
         &:hover {
           text-decoration: none;
@@ -289,15 +292,12 @@
 
 .round-end-page {
   width: 900px;
-  display: grid;
-  grid-template-columns: 600px auto;
-  grid-column-gap: 50px;
-  align-items: start;
+  margin: 40px auto;
 
   .message-wrapper {
     font-size: 20px;
     text-align: center;
-    margin: 0 auto 20px;
+    margin: 0 auto 30px;
 
     > div {
       margin-bottom: 8px;
@@ -310,76 +310,39 @@
     }
   }
 
-  .drawing-wrapper {
-    grid-row-start: 2;
-    grid-row-end: 4;
+  .drawings-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 900px;
+    margin-bottom: 20px;
 
     .drawing {
+      width: 400px;
+      box-sizing: border-box;
+      margin: 10px;
       box-shadow: 0 0 5px #bbb;
-      width: 600px;
-      height: 450px;
-      margin-bottom: 10px;
-    }
+      margin-bottom: 30px;
 
-    .nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 20px;
-      font-weight: bold;
-      height: 30px;
-
-      a {
-        color: $dark-blue;
-
-        &:hover {
-          text-decoration: none;
-        }
-      }
-
-      .page {
-        font-weight: bold;
+      &.winner {
+        border: 2px solid $green;
+        box-shadow: 0 0 3px $green;
       }
     }
   }
 
   button {
-    grid-row-start: 3;
-    grid-row-end: 4;
-    align-self: end;
-    position: relative;
-    bottom: 45px;
     font-size: 18px;
     padding: 20px;
     width: 200px;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  .phrase-wrapper {
-    grid-column-start: 1;
-    grid-column-end: 2;
-    grid-row-start: 1;
-    text-align: center;
-    margin-bottom: 30px;
-    
-    .label {
-      font-size: 16px;
-      color: #666;
-    }
-
-    .phrase {
-      font-size: 24px;
-      font-weight: bold;
-    }
+    margin: 0 auto 30px;
   }
 
   .player-list {
-    margin-bottom: 40px;
-    grid-row-start: 2;
-    grid-row-end: 3;
+    width: 90%;
+    max-width: 300px;
+    margin: 0 auto 40px;
 
     > div {
       font-size: 16px;
@@ -462,8 +425,7 @@
     width: 90%;
   }
 
-  .judging-page,
-  .round-end-page {
+  .judging-page {
     display: block;
     width: 100%;
 
@@ -484,6 +446,41 @@
         width: 90%;
         max-width: 600px;
         margin: 0 auto 30px;
+      }
+    }
+
+    button {
+      position: static;
+      bottom: 0;
+      margin: 0 auto 30px;
+      display: block;
+    }
+
+    .player-list {
+      width: 90%;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+  }
+
+  .round-end-page {
+    width: 100%;
+
+    .message-wrapper {
+      width: 90%;
+    }
+
+    .drawings-wrapper {
+      text-align: center;
+      width: 100%;
+      margin-bottom: 15px;
+
+      .drawing {
+        display: block;
+        width: 90%;
+        height: auto;
+        max-width: 600px;
+        margin: 0 auto 35px;
       }
     }
 

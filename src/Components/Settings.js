@@ -48,8 +48,8 @@ class Settings extends Component {
         <NavBar />
         <div className="settings-page centered">
           <div className="sidebar">
-            <div className={this.state.selected === 'profile' && 'selected'} onClick={() => this.setState({ selected: 'profile', displayNameError: '', displayNameSuccess: false })}>Profile Settings</div>
-            <div className={this.state.selected === 'game' && 'selected'} onClick={() => this.setState({ selected: 'game', displayNameError: '', displayNameSuccess: false })}>Game Settings</div>
+            <div className={this.state.selected === 'profile' ? 'selected' : undefined} onClick={() => this.setState({ selected: 'profile', displayNameError: '', displayNameSuccess: false })}>Profile Settings</div>
+            <div className={this.state.selected === 'game' ? 'selected' : undefined} onClick={() => this.setState({ selected: 'game', displayNameError: '', displayNameSuccess: false })}>Game Settings</div>
           </div>
           <div className="main">
             {this.state.selected === 'profile' && 

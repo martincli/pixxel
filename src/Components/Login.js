@@ -17,15 +17,15 @@ class Login extends Component {
     this.submitLogin = this.submitLogin.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.user.email) {
       this.props.history.replace('/home');
     }
   }
   
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.user.email) {
-      nextProps.history.replace('/home');
+  componentDidUpdate() {
+    if (this.props.user.email) {
+      this.props.history.replace('/home');
     }
   }
 

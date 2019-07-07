@@ -15,7 +15,7 @@ class Home extends Component {
     this.createGame = this.createGame.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.getUserGames(this.props.user.uid);
     this.props.attachUserGamesListener(this.props.user.uid);
   }

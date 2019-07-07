@@ -27,7 +27,7 @@ class Game extends Component {
       submitting: false,
       gameIdCopied: false,
       drawings: [],
-      drawingsSorted: false,
+      drawingsRound: 0,
       currDrawing: 0,
       phrase: '',
       error: ''
@@ -42,52 +42,34 @@ class Game extends Component {
     this.continueToNextRound = this.continueToNextRound.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.getGame(this.props.match.params.id).then(() => {
       this.setState({ loading: false });
       this.props.attachGameListener(this.props.game.id, this.props.history);
     });
   }
 
-  componentWillReceiveProps() {
-    const game = this.props.game;
-    if (game.started) {
-      const activeRound = game.players[this.props.user.uid].activeRound;
-      const judgeId = (activeRound === game.status.round) ? game.status.currentJudgeId : game.roundData[activeRound].judgeId;
-
-      let drawings = shuffle(Object.entries(this.props.game.players))
-        .filter(([uid,playerData]) => { return uid !== judgeId })
-        .map(([uid,playerData]) => { return {
-          uid,
-          name: playerData.name,
-          drawing: playerData.drawings[activeRound]
-        }});
-
-      this.setState({ drawings });
-    }
-  }
-
   componentDidUpdate() {
     const game = this.props.game;
-    if (game.started && this.state.drawings.length > 0) {
+    
+    if (game.started) {
       const activeRound = game.players[this.props.user.uid].activeRound;
 
-      // set first drawing to winning drawing on round end page
-      if (activeRound < game.status.round) {
-        const winnerId = game.roundData[activeRound].winnerId;
-
-        if (this.state.drawings[0].uid !== winnerId) {
-          const sortedDrawings = this.state.drawings
-            .slice()
-            .sort((a,b) => {
-              return a.uid === winnerId ? -1 : b.uid === winnerId ? 1 : 0;
-            });
-          this.setState({ drawings: sortedDrawings });
+      if (this.state.drawings.length === 0 || this.state.drawingsRound !== activeRound) {
+        // round end screen
+        if (activeRound < game.status.round) {
+          const judgeId = game.roundData[activeRound].judgeId;
+          this.setState({
+            drawings: this.getDrawings(game, activeRound, judgeId),
+            drawingsRound: activeRound
+          });
         }
-
-        // reset current drawing index
-        if (!this.state.drawingsSorted) {
-          this.setState({ currDrawing: 0, drawingsSorted: true });
+        // judging screen
+        if (game.status.haventSubmitted.length === 0 && this.props.user.uid === game.status.currentJudgeId) {
+          this.setState({
+            drawings: this.getDrawings(game, activeRound, game.status.currentJudgeId),
+            drawingsRound: activeRound
+          });
         }
       }
     }
@@ -95,6 +77,16 @@ class Game extends Component {
 
   componentWillUnmount() {
     this.props.detachGameListener(this.props.game.id);
+  }
+
+  getDrawings(game, activeRound, judgeId) {
+    return shuffle(Object.entries(game.players))
+            .filter(([uid,playerData]) => { return uid !== judgeId })
+            .map(([uid,playerData]) => { return {
+              uid,
+              name: playerData.name,
+              drawing: playerData.drawings[activeRound]
+            }});
   }
 
   joinGame() {
@@ -181,7 +173,10 @@ class Game extends Component {
 
   continueToNextRound() {
     this.props.continueToNextRound(this.props.game.id, this.props.user.uid).then(() => {
-      this.setState({ drawingsSorted: false });
+      this.setState({
+        submitting: false, 
+        drawings: []
+      });
     });
   }
 
@@ -211,20 +206,15 @@ class Game extends Component {
             <div>
               <NavBar />
               {this.state.drawings.length > 0 &&
-                <div className="round-end-page centered">
+                <div className="round-end-page">
                   <div className="message-wrapper">
                     <div>The phrase this round was <span style={{fontWeight: 'bold'}}>{game.roundData[activeRound].phrase}</span>.</div>
                     <div>The winner was <span style={{fontWeight: 'bold'}}>{game.players[game.roundData[activeRound].winnerId].name}</span>.</div>
                     {game.ended && <div className="game-end-message">{game.players[game.roundData[activeRound].winnerId].name} has won the game!</div>}
                   </div>
 
-                  <div className="drawing-wrapper">
-                    {this.state.drawings.length > 0 && <img className="drawing" src={this.state.drawings[this.state.currDrawing].drawing} alt="" />}
-                    <div className="nav">
-                      <a onClick={this.changeDrawing.bind(this,'prev')}><i className="fa fa-caret-left"></i> Prev</a>
-                      <div className="page">{`${this.state.drawings[this.state.currDrawing].name}'s drawing`}</div>
-                      <a onClick={this.changeDrawing.bind(this,'next')}>Next <i className="fa fa-caret-right"></i></a>
-                    </div>
+                  <div className="drawings-wrapper">
+                    {this.state.drawings.map(drawing => <img key={drawing.uid} className={'drawing ' + (game.roundData[activeRound].winnerId === drawing.uid ? 'winner' : '')} src={drawing.drawing} alt=""></img>)}
                   </div>
 
                   {game.ended ?
